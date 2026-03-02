@@ -7,7 +7,7 @@
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="/_sdk/element_sdk.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Bangers&amp;family=Outfit:wght@400;600;700&amp;display=swap" rel="stylesheet">
-  <style>
+<style>
     * { box-sizing: border-box; }
     body { font-family: 'Outfit', sans-serif; }
     .game-title { font-family: 'Bangers', cursive; letter-spacing: 2px; }
@@ -32,6 +32,11 @@
     .btn-game:active { transform: scale(0.98); }
     .answer-btn {
       transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      text-align: left;
+      padding: 1rem 2rem; /* Reduced padding */
+      margin: 0.5rem 0; /* Reduced margin */
     }
     .answer-btn:hover {
       transform: translateX(5px);
@@ -62,23 +67,25 @@
       backdrop-filter: blur(5px);
     }
     .grade-badge {
-      font-weight: bold;
-      padding: 0.75rem 1.5rem;
-      border-radius: 0.75rem;
-      display: inline-block;
-      font-size: 1.5rem;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    }
+  font-weight: bold;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.5rem;
+  display: inline-block;
+  font-size: 0.875rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+}
+    
     /* Settings modal styles */
     .settings-input {
       background: rgba(255, 255, 255, 0.1);
       border: 2px solid rgba(255, 255, 255, 0.3);
       color: white;
-      padding: 0.75rem;
+      padding: 1rem 1.5rem; /* Smaller */
       border-radius: 0.75rem;
       width: 100%;
       text-align: center;
-      font-size: 1.125rem;
+      font-size: 1rem; /* Smaller */
     }
     .settings-input:focus {
       outline: none;
@@ -91,46 +98,105 @@
       border-radius: 1rem;
       padding: 1rem;
       margin-top: 1rem;
+      font-size: 1rem; /* Smaller */
     }
     
-    /* SUPER LARGE FONTS FOR PROJECTOR VIEWING - YOUR ORIGINAL SIZES */
-    body { font-size: 28px; }
-    .text-sm { font-size: 1.5rem; }
-    .text-base { font-size: 2rem; }
-    .text-lg { font-size: 2.5rem; }
-    .text-xl { font-size: 3rem; }
-    .text-2xl { font-size: 4rem; }
-    .text-3xl { font-size: 5rem; }
-    .text-4xl { font-size: 6rem; }
-    .text-5xl { font-size: 7rem; }
-    .text-6xl { font-size: 8rem; }
-    .text-7xl { font-size: 9rem; }
-    .text-8xl { font-size: 12rem; }
-    .game-title { font-size: 4rem !important; }
+    /* COMPACT BASE SIZES - Back to normal for most elements */
+    body { font-size: 16px; }
+    .text-sm { font-size: 0.875rem; }
+    .text-base { font-size: 1rem; }
+    .text-lg { font-size: 1.125rem; }
+    .text-xl { font-size: 1.25rem; }
+    .text-2xl { font-size: 1.5rem; }
+    .text-3xl { font-size: 1.875rem; }
+    .text-4xl { font-size: 2.25rem; }
+    .text-5xl { font-size: 3rem; }
+    .text-6xl { font-size: 3.75rem; }
+    .text-7xl { font-size: 4.5rem; }
+    .text-8xl { font-size: 6rem; }
+    .game-title { font-size: 2rem !important; }
     
-    /* Make answer letters much bigger */
-    .answer-letter { width: 4.5rem; height: 4.5rem; font-size: 2.5rem; }
+    /* SMALL answer letters */
+    .answer-letter { 
+      width: 1.5rem; 
+      height: 1.5rem; 
+      font-size: 1rem;
+      margin-right: 1rem;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
     
-    /* Make buttons much larger */
+    /* COMPACT buttons - except pass button */
     .btn-game { 
-      font-size: 2rem; 
-      padding: 1.5rem 3rem;
+      font-size: 1rem; 
+      padding: 0.75rem 1.5rem;
     }
     
-    /* Larger input fields */
+    /* PASS BUTTON - Make it a thin bar */
+    .pass-btn {
+      font-size: 1.25rem !important;
+      padding: 0.5rem 2rem !important;
+      width: 100%;
+      height: auto;
+    }
+    
+    /* Compact input fields */
     input[type="text"] {
-      font-size: 1.5rem;
-      padding: 1.5rem 2rem;
+      font-size: 1rem;
+      padding: 0.75rem 1rem;
     }
     
-    /* Larger team names and scores */
-    .team-name { font-size: 3rem; }
-    .team-score { font-size: 4rem; }
+    /* COMPACT team names and scores for header */
+    .team-name { font-size: 1.5rem; }
+    .team-score { font-size: 2rem; }
     
-    /* Make everything more spaced out for projector viewing */
-    .space-y-4 > * + * { margin-top: 2rem; }
-    .space-y-6 > * + * { margin-top: 3rem; }
-    .space-y-8 > * + * { margin-top: 4rem; }
+    /* ONLY THESE 3 ELEMENTS STAY BIG FOR READABILITY */
+    .question-text { 
+      font-size: 4rem !important; 
+      line-height: 1.3;
+      margin: 1rem 0;
+      padding: 1rem;
+    }
+    .answer-text { 
+      font-size: 3rem !important; 
+      line-height: 1.3;
+      flex: 1;
+    }
+    .current-player { 
+      font-size: 3.5rem !important; 
+      margin: 1rem 0;
+      padding: 1rem;
+      text-align: center;
+    }
+    
+    /* COMPACT spacing */
+    .space-y-4 > * + * { margin-top: 1rem; }
+    .space-y-6 > * + * { margin-top: 1.5rem; }
+    .space-y-8 > * + * { margin-top: 2rem; }
+    
+    /* Ensure containers can handle the big text */
+    .question-container {
+      min-height: auto;
+      padding: 1rem;
+      overflow: visible;
+    }
+    
+    .answers-container {
+      min-height: auto;
+      padding: 0.5rem;
+    }
+    
+    .player-info {
+      min-height: auto;
+      padding: 1rem;
+    }
+    
+    .game-container {
+      padding: 1rem;
+      overflow: visible;
+    }
     
     /* Question transition effects */
     .question-transition {
@@ -146,17 +212,16 @@
       50% { opacity: 0.5; }
     }
     
-    /* Mobile adjustments - still large but proportional */
+    /* Mobile adjustments */
     @media (max-width: 768px) {
-      .text-8xl { font-size: 8rem; }
-      .text-6xl { font-size: 6rem; }
-      .text-4xl { font-size: 4rem; }
-      .answer-letter { width: 3.5rem; height: 3.5rem; font-size: 2rem; }
-      .btn-game { font-size: 1.5rem; padding: 1rem 2rem; }
+      .question-text { font-size: 2.5rem !important; }
+      .answer-text { font-size: 2rem !important; }
+      .current-player { font-size: 2.5rem !important; }
+      .answer-letter { width: 1.25rem; height: 1.25rem; font-size: 0.875rem; }
     }
 </style>
 
-  <style>body { box-sizing: border-box; }</style>
+ <style>body { box-sizing: border-box; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
  </head>
  <body class="h-full bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white overflow-auto">
@@ -228,9 +293,9 @@
        <!-- Round 3 Settings -->
        <div class="bg-white/10 rounded-xl p-4">
         <h3 class="font-bold text-lg text-yellow-300 mb-3">Round 3 - Difficulty Choice</h3>
-        <label class="block text-sm text-white/70 mb-2">Questions per team:</label>
+        <label class="block text-sm text-white/70 mb-2">Questions in shared pool:</label>
         <input type="number" id="round3-questions" value="3" min="1" max="10" class="settings-input">
-        <p class="text-xs text-white/50 mt-2">Mixed difficulties</p>
+        <p class="text-xs text-white/50 mt-2">Shared pool: N easy + N medium + N hard</p>
        </div>
 
        <!-- Round 4 Settings -->
@@ -273,7 +338,6 @@
      </div>
     </div>
    </div>
-
    <!-- Team Setup Screen -->
    <div id="screen-teams" class="flex-1 flex-col p-6 hidden">
     <h2 class="game-title text-4xl text-yellow-400 text-center mb-6">Set Up Your Teams</h2>
@@ -312,7 +376,8 @@
    </div>
 
    <!-- Results Screen -->
-   <div id="screen-results" class="flex-1 flex-col items-center justify-center p-6 hidden overflow-auto">
+   <!-- Results Screen -->
+<div id="screen-results" class="flex-1 flex-col p-6 hidden overflow-y-auto">
     <h1 class="game-title text-6xl text-yellow-400 mb-8 animate-pulse-glow">🏆 Game Over! 🏆</h1>
     <div id="final-results" class="w-full max-w-2xl space-y-4 mb-8">
      <!-- Results will be populated here -->
@@ -338,7 +403,7 @@
     const defaultGameSettings = {
       round1Questions: 3,  // Questions per team
       round2Questions: 3,  // Questions per team
-      round3Questions: 3,  // Questions per team
+      round3Questions: 3,  // Questions in shared pool (N of each difficulty)
       round4Questions: 10, // Total questions
       round5Questions: 5   // Questions per team
     };
@@ -384,7 +449,15 @@
       round4UsedPlayers: new Set(), // Track which players have been used in Round 4
       round5Questions: null,
       round5CurrentQuestion: 0,
-      round5TurnIndex: 0
+      round5TurnIndex: 0,
+      // NEW: Round 3 shared pool tracking
+      round3Pool: {
+        easy: 0,
+        medium: 0,
+        hard: 0
+      },
+      round3TotalQuestions: 0,
+      round3CurrentQuestion: 0
     };
 
     const ROUND_POINTS = {
@@ -394,7 +467,6 @@
       4: 150,
       5: 100
     };
-
     // ========== SETTINGS FUNCTIONS ==========
     function showSettings() {
       // Load current settings into the form
@@ -452,22 +524,22 @@
           <div class="bg-green-500/20 rounded-lg p-3">
             <div class="font-bold text-green-300">Easy Questions</div>
             <div class="text-2xl font-bold">${requirements.easy}</div>
-            <div class="text-xs text-white/70">Rounds 1 & 2 + Round 5 (lowest team)</div>
+            <div class="text-xs text-white/70">Rounds 1, 2, 3 + Round 5 (lowest team)</div>
           </div>
           <div class="bg-yellow-500/20 rounded-lg p-3">
             <div class="font-bold text-yellow-300">Medium Questions</div>
             <div class="text-2xl font-bold">${requirements.medium}</div>
-            <div class="text-xs text-white/70">Round 4 + Round 5 (middle team)</div>
+            <div class="text-xs text-white/70">Rounds 3, 4 + Round 5 (middle team)</div>
           </div>
           <div class="bg-red-500/20 rounded-lg p-3">
             <div class="font-bold text-red-300">Hard Questions</div>
             <div class="text-2xl font-bold">${requirements.hard}</div>
-            <div class="text-xs text-white/70">Round 5 (highest team)</div>
+            <div class="text-xs text-white/70">Rounds 3 + Round 5 (highest team)</div>
           </div>
         </div>
         <div class="mt-4 p-3 bg-blue-500/20 rounded-lg">
           <div class="font-bold text-blue-300">Total Questions Needed: ${requirements.total}</div>
-          <div class="text-sm text-white/70 mt-1">Plus extras for Round 3 (player choice) - recommend 20+ of each difficulty</div>
+          <div class="text-sm text-white/70 mt-1">Round 3 now uses a shared pool - teams compete for remaining questions!</div>
         </div>
       `;
     }
@@ -481,19 +553,19 @@
         <div class="grid grid-cols-3 gap-3 text-sm">
           <div class="text-center">
             <div class="font-bold text-green-300">Easy: ${requirements.easy}</div>
-            <div class="text-xs text-white/60">R1, R2, R5</div>
+            <div class="text-xs text-white/60">R1, R2, R3, R5</div>
           </div>
           <div class="text-center">
             <div class="font-bold text-yellow-300">Medium: ${requirements.medium}</div>
-            <div class="text-xs text-white/60">R4, R5</div>
+            <div class="text-xs text-white/60">R3, R4, R5</div>
           </div>
           <div class="text-center">
             <div class="font-bold text-red-300">Hard: ${requirements.hard}</div>
-            <div class="text-xs text-white/60">R5</div>
+            <div class="text-xs text-white/60">R3, R5</div>
           </div>
         </div>
         <div class="text-center mt-2 text-sm">
-          <strong>Total: ${requirements.total}</strong> + extras for Round 3
+          <strong>Total: ${requirements.total}</strong> (R3 uses shared pool)
         </div>
       `;
       
@@ -508,10 +580,10 @@
       const r4 = parseInt(document.getElementById('round4-questions')?.value) || gameSettings.round4Questions;
       const r5 = parseInt(document.getElementById('round5-questions')?.value) || gameSettings.round5Questions;
       
-      // Calculate requirements
-      const easyQuestions = (r1 * 3) + (r2 * 3) + (r5 * 1); // R1: all teams, R2: all teams, R5: lowest scoring team
-      const mediumQuestions = r4 + (r5 * 1); // R4: all questions, R5: middle scoring team  
-      const hardQuestions = r5 * 1; // R5: highest scoring team
+      // Calculate requirements - NEW ROUND 3 LOGIC
+      const easyQuestions = (r1 * 3) + (r2 * 3) + r3 + (r5 * 1); // R1: all teams, R2: all teams, R3: shared pool, R5: lowest scoring team
+      const mediumQuestions = r4 + r3 + (r5 * 1); // R4: all questions, R3: shared pool, R5: middle scoring team  
+      const hardQuestions = r3 + (r5 * 1); // R3: shared pool, R5: highest scoring team
       
       return {
         easy: easyQuestions,
@@ -537,7 +609,6 @@
       setupSettingsListeners();
       updateMainScreenRequirements();
     });
-
     // ========== ELEMENT SDK INITIALIZATION ==========
     if (window.elementSdk) {
       window.elementSdk.init({
@@ -569,6 +640,7 @@
       gameState.teams[1].name = config.team_2_name || defaultConfig.team_2_name;
       gameState.teams[2].name = config.team_3_name || defaultConfig.team_3_name;
     }
+
     // ========== GOOGLE SHEETS LOADING ==========
     function extractSheetId(url) {
       const match = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
@@ -701,113 +773,63 @@
         showError(error.message);
       }
     }
-
     // ========== UPDATED QUESTION SELECTION ==========
     function getRandomQuestion(filter = null) {
-      let available = gameState.questions.filter(q => !gameState.usedQuestions.has(q.id));
-      
-      // Apply difficulty filter based on round and current context
-      if (gameState.currentRound === 1 || gameState.currentRound === 2) {
-        // Rounds 1-2: Always easy questions
-        available = available.filter(q => q.difficulty === 'easy');
-      } else if (gameState.currentRound === 4) {
-        // Round 4: Always medium questions
-        available = available.filter(q => q.difficulty === 'medium');
-      } else if (gameState.currentRound === 5) {
-        // Round 5: Difficulty based on team score ranking
-        const teamsSorted = [...gameState.teams].map((team, idx) => ({team, idx})).sort((a, b) => b.team.score - a.team.score);
-        const highestIdx = teamsSorted[0].idx;
-        const secondIdx = teamsSorted[1].idx;
-        const lowestIdx = teamsSorted[2].idx;
-        
-        let desiredDifficulty = 'easy'; // Default for lowest scoring team
-        if (gameState.currentTeamIndex === highestIdx) {
-          desiredDifficulty = 'hard';
-        } else if (gameState.currentTeamIndex === secondIdx) {
-          desiredDifficulty = 'medium';
-        }
-        
-        available = available.filter(q => q.difficulty === desiredDifficulty);
-      }
-      
-      // Apply additional filters (for Round 3 category/difficulty selection)
-      if (filter) {
-        if (filter.category) {
-          available = available.filter(q => q.category === filter.category);
-        }
-        if (filter.difficulty) {
-          available = available.filter(q => q.difficulty === filter.difficulty);
-        }
-      }
-      
-      // If no questions available with current filters, try fallback
-      if (available.length === 0) {
-        console.warn("No questions available with current filters, trying fallback...");
-        
-        // For Rounds 1-2, fallback to any easy questions (ignore used questions)
-        if (gameState.currentRound === 1 || gameState.currentRound === 2) {
-          available = gameState.questions.filter(q => q.difficulty === 'easy');
-          if (available.length > 0) {
-            gameState.usedQuestions.clear(); // Reset used questions for this difficulty
-          }
-        }
-        // For Round 4, fallback to any medium questions
-        else if (gameState.currentRound === 4) {
-          available = gameState.questions.filter(q => q.difficulty === 'medium');
-          if (available.length > 0) {
-            gameState.usedQuestions.clear();
-          }
-        }
-        // For Round 5, fallback to any questions of the required difficulty
-        else if (gameState.currentRound === 5) {
-          const teamsSorted = [...gameState.teams].map((team, idx) => ({team, idx})).sort((a, b) => b.team.score - a.team.score);
-          const highestIdx = teamsSorted[0].idx;
-          const secondIdx = teamsSorted[1].idx;
-          
-          let desiredDifficulty = 'easy';
-          if (gameState.currentTeamIndex === highestIdx) {
-            desiredDifficulty = 'hard';
-          } else if (gameState.currentTeamIndex === secondIdx) {
-            desiredDifficulty = 'medium';
-          }
-          
-          available = gameState.questions.filter(q => q.difficulty === desiredDifficulty);
-          if (available.length > 0) {
-            gameState.usedQuestions.clear();
-          }
-        }
-        // For Round 3, fallback to any questions matching the filter
-        else {
-          available = gameState.questions;
-          if (filter) {
-            if (filter.category) {
-              available = available.filter(q => q.category === filter.category);
-            }
-            if (filter.difficulty) {
-              available = available.filter(q => q.difficulty === filter.difficulty);
-            }
-          }
-          if (available.length > 0) {
-            gameState.usedQuestions.clear();
-          }
-        }
-      }
-      
-      if (available.length === 0) {
-        console.error("No questions available even after fallback!");
-        return null;
-      }
-      
-      const question = available[Math.floor(Math.random() * available.length)];
-      gameState.usedQuestions.add(question.id);
-      
-      // Shuffle answers and track which index the correct answer ends up at
-      const shuffledAnswers = shuffleAnswers(question.answers, question.correctAnswerIndex);
-      question.answers = shuffledAnswers.answers;
-      question.correctAnswerIndex = shuffledAnswers.correctIndex;
-      
-      return question;
+  let available = gameState.questions.filter(q => !gameState.usedQuestions.has(q.id));
+  
+  // Apply difficulty filter based on round and current context
+  if (gameState.currentRound === 1 || gameState.currentRound === 2) {
+    // Rounds 1-2: Always easy questions
+    available = available.filter(q => q.difficulty === 'easy');
+  } else if (gameState.currentRound === 3) {
+    // Round 3: Ensure we respect used questions AND pool availability
+    // The difficulty filter will be applied below via the filter parameter
+  } else if (gameState.currentRound === 4) {
+    // Round 4: Always medium questions
+    available = available.filter(q => q.difficulty === 'medium');
+  } else if (gameState.currentRound === 5) {
+    // Round 5: Difficulty based on team score ranking
+    const teamsSorted = [...gameState.teams].map((team, idx) => ({team, idx})).sort((a, b) => b.team.score - a.team.score);
+    const highestIdx = teamsSorted[0].idx;
+    const secondIdx = teamsSorted[1].idx;
+    const lowestIdx = teamsSorted[2].idx;
+    
+    let desiredDifficulty = 'easy'; // Default for lowest scoring team
+    if (gameState.currentTeamIndex === highestIdx) {
+      desiredDifficulty = 'hard';
+    } else if (gameState.currentTeamIndex === secondIdx) {
+      desiredDifficulty = 'medium';
     }
+    
+    available = available.filter(q => q.difficulty === desiredDifficulty);
+  }
+  
+  // Apply additional filters (for Round 2 category selection and Round 3 difficulty selection)
+  if (filter) {
+    if (filter.category) {
+      available = available.filter(q => q.category === filter.category);
+    }
+    if (filter.difficulty) {
+      available = available.filter(q => q.difficulty === filter.difficulty);
+    }
+  }
+  
+  // If no questions available, return null (should not happen with proper validation)
+  if (available.length === 0) {
+    console.error("No questions available! This should not happen if validation is working correctly.");
+    return null;
+  }
+  
+  const question = available[Math.floor(Math.random() * available.length)];
+  gameState.usedQuestions.add(question.id);
+  
+  // Shuffle answers and track which index the correct answer ends up at
+  const shuffledAnswers = shuffleAnswers(question.answers, question.correctAnswerIndex);
+  question.answers = shuffledAnswers.answers;
+  question.correctAnswerIndex = shuffledAnswers.correctIndex;
+  
+  return question;
+}
 
     function shuffleAnswers(answers, correctIndex) {
       const correctAnswer = answers[correctIndex];
@@ -833,6 +855,7 @@
     function hideError() {
       document.getElementById('load-error').classList.add('hidden');
     }
+
     // ========== TEAM MANAGEMENT ==========
     function distributePlayersToTeams() {
       if (gameState.players.length < 6) {
@@ -891,7 +914,6 @@
       gameState.teams[teamIndex].members.splice(memberIndex, 1);
       renderTeams();
     }
-
     // ========== SCREEN NAVIGATION ==========
     function showScreen(screenId) {
       // Clear any running timers
@@ -935,6 +957,15 @@
       gameState.round5Questions = null;
       gameState.round5CurrentQuestion = 0;
       gameState.round5TurnIndex = 0;
+      
+      // NEW: Reset Round 3 shared pool
+      gameState.round3Pool = {
+        easy: gameSettings.round3Questions,
+        medium: gameSettings.round3Questions,
+        hard: gameSettings.round3Questions
+      };
+      gameState.round3TotalQuestions = gameSettings.round3Questions * 3;
+      gameState.round3CurrentQuestion = 0;
       
       showScreen('game');
       updateScoreboard();
@@ -1021,7 +1052,23 @@
         return;
       }
       
-      // Track questions asked in this round for each team
+      // For Round 3, check if shared pool is exhausted
+      if (gameState.currentRound === 3) {
+        gameState.round3CurrentQuestion++;
+        if (gameState.round3CurrentQuestion >= gameState.round3TotalQuestions) {
+          // Round 3 complete, move to round 4
+          gameState.currentRound++;
+          gameState.currentTeamIndex = 0;
+          startRound();
+          return;
+        }
+        // Continue Round 3 with next team
+        gameState.currentTeamIndex = (gameState.currentTeamIndex + 1) % 3;
+        startRound();
+        return;
+      }
+      
+      // Track questions asked in this round for each team (Rounds 1-2)
       if (!gameState.roundQuestionCounts) {
         gameState.roundQuestionCounts = { 0: 0, 1: 0, 2: 0 };
       }
@@ -1035,7 +1082,6 @@
       switch(gameState.currentRound) {
         case 1: questionsPerTeam = gameSettings.round1Questions; break;
         case 2: questionsPerTeam = gameSettings.round2Questions; break;
-        case 3: questionsPerTeam = gameSettings.round3Questions; break;
         default: questionsPerTeam = 3; break;
       }
       
@@ -1044,7 +1090,7 @@
                                      gameState.roundQuestionCounts[1] >= questionsPerTeam && 
                                      gameState.roundQuestionCounts[2] >= questionsPerTeam;
       
-      if (allTeamsCompletedRound && gameState.currentRound <= 3) {
+      if (allTeamsCompletedRound && gameState.currentRound <= 2) {
         // All teams answered required questions each, move to next round
         gameState.currentRound++;
         gameState.roundQuestionCounts = { 0: 0, 1: 0, 2: 0 };
@@ -1068,6 +1114,17 @@
       gameState.round5Questions = null;
       gameState.round5CurrentQuestion = 0;
       gameState.round5TurnIndex = 0;
+      
+      // Reset Round 3 shared pool
+      if (roundNumber === 3) {
+        gameState.round3Pool = {
+          easy: gameSettings.round3Questions,
+          medium: gameSettings.round3Questions,
+          hard: gameSettings.round3Questions
+        };
+        gameState.round3TotalQuestions = gameSettings.round3Questions * 3;
+        gameState.round3CurrentQuestion = 0;
+      }
       
       gameState.usedQuestions.clear();
       
@@ -1153,18 +1210,27 @@
       }
     }
 
-    // ========== ROUND 3 - Difficulty Choice ==========
+    // ========== NEW ROUND 3 - Difficulty Choice with Shared Pool ==========
     function startRound3() {
       gameState.passUsed = false;
       gameState.passedToPlayer = null;
+      
+      // Check if shared pool is exhausted
+      if (gameState.round3Pool.easy <= 0 && gameState.round3Pool.medium <= 0 && gameState.round3Pool.hard <= 0) {
+        // Round 3 complete, move to round 4
+        gameState.currentRound++;
+        gameState.currentTeamIndex = 0;
+        startRound();
+        return;
+      }
       
       const team = gameState.teams[gameState.currentTeamIndex];
       gameState.currentPlayer = getRandomPlayer(gameState.currentTeamIndex);
       
       const difficulties = [
-        { name: 'easy', points: ROUND_POINTS[3].easy, emoji: '😊', color: 'from-green-500 to-emerald-600' },
-        { name: 'medium', points: ROUND_POINTS[3].medium, emoji: '🤔', color: 'from-yellow-500 to-orange-600' },
-        { name: 'hard', points: ROUND_POINTS[3].hard, emoji: '🔥', color: 'from-red-500 to-pink-600' }
+        { name: 'easy', points: ROUND_POINTS[3].easy, emoji: '😊', color: 'from-green-500 to-emerald-600', available: gameState.round3Pool.easy },
+        { name: 'medium', points: ROUND_POINTS[3].medium, emoji: '🤔', color: 'from-yellow-500 to-orange-600', available: gameState.round3Pool.medium },
+        { name: 'hard', points: ROUND_POINTS[3].hard, emoji: '🔥', color: 'from-red-500 to-pink-600', available: gameState.round3Pool.hard }
       ];
       
       document.getElementById('question-area').innerHTML = `
@@ -1177,18 +1243,39 @@
               <span class="font-bold text-xl">${gameState.currentPlayer}</span>
             </div>
             <h2 class="game-title text-3xl text-yellow-400">Choose Difficulty</h2>
-            <p class="text-white/70 mt-2">Higher difficulty = More points!</p>
-            <p class="text-sm text-white/50 mt-1">Question ${gameState.roundQuestionCounts[gameState.currentTeamIndex] + 1} of ${gameSettings.round3Questions} for ${team.name}</p>
+            <p class="text-white/70 mt-2">Shared Pool - Higher difficulty = More points!</p>
+            <p class="text-sm text-white/50 mt-1">Question ${gameState.round3CurrentQuestion + 1} of ${gameState.round3TotalQuestions} total</p>
+          </div>
+          
+          <!-- Pool Status -->
+          <div class="bg-white/10 rounded-xl p-4 mb-6">
+            <h3 class="font-bold text-lg text-yellow-300 mb-3 text-center">📊 Questions Remaining in Pool</h3>
+            <div class="grid grid-cols-3 gap-4 text-center">
+              <div class="bg-green-500/20 rounded-lg p-3">
+                <div class="font-bold text-green-300">Easy</div>
+                <div class="text-2xl font-bold">${gameState.round3Pool.easy}</div>
+              </div>
+              <div class="bg-yellow-500/20 rounded-lg p-3">
+                <div class="font-bold text-yellow-300">Medium</div>
+                <div class="text-2xl font-bold">${gameState.round3Pool.medium}</div>
+              </div>
+              <div class="bg-red-500/20 rounded-lg p-3">
+                <div class="font-bold text-red-300">Hard</div>
+                <div class="text-2xl font-bold">${gameState.round3Pool.hard}</div>
+              </div>
+            </div>
           </div>
           
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             ${difficulties.map((diff, index) => `
               <button onclick="selectDifficulty('${diff.name}')" 
-                class="difficulty-card bg-gradient-to-br ${diff.color} rounded-2xl p-8 text-center shadow-xl transition-all"
-                style="animation-delay: ${index * 0.1}s">
+                class="difficulty-card bg-gradient-to-br ${diff.color} rounded-2xl p-8 text-center shadow-xl transition-all ${diff.available <= 0 ? 'opacity-50 cursor-not-allowed' : ''}"
+                style="animation-delay: ${index * 0.1}s"
+                ${diff.available <= 0 ? 'disabled' : ''}>
                 <div class="text-5xl mb-4">${diff.emoji}</div>
                 <div class="text-2xl font-bold capitalize mb-2">${diff.name}</div>
                 <div class="game-title text-3xl text-white">${diff.points} pts</div>
+                <div class="text-sm text-white/70 mt-2">${diff.available} left</div>
               </button>
             `).join('')}
           </div>
@@ -1197,17 +1284,26 @@
     }
 
     function selectDifficulty(difficulty) {
+      // Check if difficulty is available in pool
+      if (gameState.round3Pool[difficulty] <= 0) {
+        showInlineMessage(`No ${difficulty} questions left in the pool!`);
+        return;
+      }
+      
       gameState.currentQuestion = getRandomQuestion({ difficulty });
       if (!gameState.currentQuestion) {
         showInlineMessage(`No ${difficulty} questions available. Try another difficulty!`);
         return;
       }
+      
+      // Remove question from pool
+      gameState.round3Pool[difficulty]--;
+      
       const team = gameState.teams[gameState.currentTeamIndex];
       gameState.currentDifficulty = difficulty;
       const points = ROUND_POINTS[3][difficulty] || 100;
       renderQuestionScreen(team, gameState.currentPlayer, points, true);
     }
-
     // ========== SHARED QUESTION SCREEN RENDERER ==========
     function renderQuestionScreen(team, player, points, showPass = false) {
       const q = gameState.currentQuestion;
@@ -1217,14 +1313,15 @@
       
       // Show current progress for rounds 1-3
       let progressText = '';
-      if (gameState.currentRound <= 3) {
+      if (gameState.currentRound <= 2) {
         let questionsPerTeam;
         switch(gameState.currentRound) {
           case 1: questionsPerTeam = gameSettings.round1Questions; break;
           case 2: questionsPerTeam = gameSettings.round2Questions; break;
-          case 3: questionsPerTeam = gameSettings.round3Questions; break;
         }
         progressText = `<p class="text-sm text-white/50 mb-4">Question ${gameState.roundQuestionCounts[gameState.currentTeamIndex] + 1} of ${questionsPerTeam} for ${team.name}</p>`;
+      } else if (gameState.currentRound === 3) {
+        progressText = `<p class="text-sm text-white/50 mb-4">Question ${gameState.round3CurrentQuestion + 1} of ${gameState.round3TotalQuestions} from shared pool</p>`;
       }
       
       document.getElementById('question-area').innerHTML = `
@@ -1319,6 +1416,7 @@
         timerBar.style.width = `${(gameState.timeLeft / 30) * 100}%`;
       }
     }
+
     // ========== ROUND 4 - Speed Buzz ==========
     function startRound4() {
       if (gameState.round4CurrentQuestion >= gameSettings.round4Questions) {
@@ -1426,7 +1524,6 @@
         </div>
       `;
     }
-
     function submitBuzzAnswer(answer) {
       const q = gameState.currentQuestion;
       const isCorrect = answer.trim().toLowerCase() === q.answers[q.correctAnswerIndex].trim().toLowerCase();
@@ -1613,7 +1710,7 @@
       }
       
       const difficultyWeights = { easy: 1, medium: 2, hard: 3 };
-            const questionWeight = difficultyWeights[gameState.currentQuestion.difficulty] || 1;
+      const questionWeight = difficultyWeights[gameState.currentQuestion.difficulty] || 1;
       
       gameState.playerStats[gameState.currentPlayer].totalWeightedPoints += questionWeight;
       if (isCorrect) {
@@ -1673,6 +1770,7 @@
       gameState.round5TurnIndex = (gameState.round5TurnIndex + 1) % 3; // Rotate to next team
       startRound5();
     }
+
     // ========== ANSWER SUBMISSION AND PASS SYSTEM ==========
     function submitAnswer(answer) {
       clearInterval(gameState.timer);
@@ -1736,7 +1834,6 @@
         nextTurn();
       });
     }
-
     function showResultFeedback(isCorrect, points, onContinue) {
       const team = gameState.teams[gameState.currentTeamIndex];
       
@@ -1823,83 +1920,205 @@
       const gradeData = GRADING_SCALE[grade];
       return `<span class="grade-badge" style="background-color: ${gradeData.color}; color: white;">${gradeData.label} (${grade})</span>`;
     }
+// ========== ENHANCED GRADING SYSTEM - ALL STUDENTS ==========
+function calculateTotalQuestionsInGame() {
+  // Calculate total questions based on current game settings
+  const r1 = gameSettings.round1Questions * 3; // 3 teams × questions per team
+  const r2 = gameSettings.round2Questions * 3; // 3 teams × questions per team
+  const r3 = gameSettings.round3Questions * 3; // shared pool (N easy + N medium + N hard)
+  const r4 = gameSettings.round4Questions;     // total buzz questions
+  const r5 = gameSettings.round5Questions * 3; // 3 teams × questions per team
+  
+  return r1 + r2 + r3 + r4 + r5;
+}
 
-    // ========== END GAME ==========
-    function endGame() {
-      showScreen('results');
-      
-      // Sort teams by score
-      const sortedTeams = [...gameState.teams].sort((a, b) => b.score - a.score);
-      
-      document.getElementById('final-results').innerHTML = `
-        <div class="space-y-6">
-          ${sortedTeams.map((team, index) => `
-            <div class="flex items-center gap-4 p-6 rounded-2xl animate-slide-in ${index === 0 ? 'bg-gradient-to-r from-yellow-600/50 to-amber-600/50 scale-105' : 'bg-white/10'}"
-              style="animation-delay: ${index * 0.2}s">
-              <div class="text-5xl">${index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}</div>
-              <div class="flex-1">
-                <div class="font-bold text-2xl" style="color: ${team.color}">${team.name}</div>
-                <div class="text-white/70">${team.members.length} players</div>
-              </div>
-              <div class="game-title text-4xl text-yellow-400">${team.score}</div>
-            </div>
-          `).join('')}
-        </div>
-        
-        <div class="mt-8 text-center">
-          <div class="text-6xl mb-4">🎊</div>
-          <h3 class="game-title text-3xl" style="color: ${sortedTeams[0].color}">
-            ${sortedTeams[0].name} Wins!
-          </h3>
-        </div>
-      `;
+function calculateStudentGrade(student) {
+  const stats = gameState.playerStats[student];
+  const totalQuestions = calculateTotalQuestionsInGame();
+  
+  // 15% of total questions, minimum 3 questions
+  const minRequired = Math.max(3, Math.ceil(totalQuestions * 0.15));
+  
+  if (!stats || stats.totalWeightedPoints === 0) {
+    return { 
+      grade: null, 
+      reason: "No participation", 
+      questionsAnswered: 0,
+      minRequired: minRequired
+    };
+  }
+  
+  // Estimate actual questions answered from weighted points
+  // (weighted points ≈ questions answered, with difficulty multipliers)
+  const questionsAnswered = Math.round(stats.totalWeightedPoints);
+  
+  if (questionsAnswered < minRequired) {
+    return { 
+      grade: null, 
+      reason: `Only answered ${questionsAnswered}/${minRequired} required questions`,
+      questionsAnswered: questionsAnswered,
+      minRequired: minRequired,
+      participationPercent: Math.round((questionsAnswered / minRequired) * 100)
+    };
+  }
+  
+  // Student has sufficient participation - calculate grade
+  const percentage = (stats.weightedPoints / stats.totalWeightedPoints) * 100;
+  const grade = calculateGrade(stats.weightedPoints, stats.totalWeightedPoints);
+  
+  return {
+    grade: grade,
+    percentage: Math.round(percentage),
+    questionsAnswered: questionsAnswered,
+    minRequired: minRequired
+  };
+}
 
-      // Display grades for winning team
-      const winningTeam = sortedTeams[0];
-      let gradesHTML = `
-        <div class="bg-gradient-to-r from-yellow-600/50 to-amber-600/50 rounded-2xl p-6">
-          <h2 class="game-title text-3xl text-yellow-400 text-center mb-6">🎓 ${winningTeam.name} - Student Grades</h2>
-          <div class="space-y-4">
-      `;
+function displayAllGrades() {
+  const allStudents = gameState.teams.flatMap(team => team.members);
+  const totalQuestions = calculateTotalQuestionsInGame();
+  const minRequired = Math.max(3, Math.ceil(totalQuestions * 0.15));
+  
+  let gradesHTML = `
+    <div class="w-full max-w-4xl mx-auto">
+      <div class="bg-gradient-to-r from-blue-600/50 to-purple-600/50 rounded-2xl p-6">
+        <h2 class="game-title text-2xl text-yellow-400 text-center mb-4">🎓 Individual Student Grades</h2>
+        <p class="text-center text-white/70 mb-2 text-sm">
+          <strong>Grading Requirements:</strong> Answer at least ${minRequired} questions (15% of ${totalQuestions} total, minimum 3)
+        </p>
+  `;
 
-      winningTeam.members.forEach((member, index) => {
-        const stats = gameState.playerStats[member];
-        if (stats && stats.totalWeightedPoints > 0) {
-          const grade = calculateGrade(stats.weightedPoints, stats.totalWeightedPoints);
-          const percentage = Math.round((stats.weightedPoints / stats.totalWeightedPoints) * 100);
-          gradesHTML += `
-            <div class="bg-white/10 rounded-xl p-4 flex items-center justify-between animate-slide-in" style="animation-delay: ${index * 0.1}s">
-              <div>
-                <div class="font-bold text-lg">${member}</div>
-                <div class="text-sm text-white/70">Difficulty-weighted accuracy: ${percentage}%</div>
-              </div>
-              <div>
-                ${getGradeDisplay(grade)}
-              </div>
-            </div>
-          `;
-        } else {
-          gradesHTML += `
-            <div class="bg-white/10 rounded-xl p-4 flex items-center justify-between animate-slide-in" style="animation-delay: ${index * 0.1}s">
-              <div>
-                <div class="font-bold text-lg">${member}</div>
-                <div class="text-sm text-white/70">No questions answered</div>
-              </div>
-              <div>
-                ${getGradeDisplay(2)}
-              </div>
-            </div>
-          `;
-        }
-      });
+  // Separate students into those who get grades vs. those who don't
+  const gradedStudents = [];
+  const notGradedStudents = [];
+  
+  allStudents.forEach(student => {
+    const result = calculateStudentGrade(student);
+    if (result.grade !== null) {
+      gradedStudents.push({ student, result });
+    } else {
+      notGradedStudents.push({ student, result });
+    }
+  });
 
+  // Sort graded students by grade (highest first)
+  gradedStudents.sort((a, b) => b.result.grade - a.result.grade);
+
+  // Display graded students in a grid
+  if (gradedStudents.length > 0) {
+    gradesHTML += `
+      <div class="mb-6">
+        <h3 class="text-lg font-bold text-green-300 mb-3">✅ Students Receiving Grades (${gradedStudents.length})</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+    `;
+    
+    gradedStudents.forEach(({ student, result }, index) => {
       gradesHTML += `
+        <div class="bg-white/10 rounded-lg p-3 flex items-center justify-between animate-slide-in" style="animation-delay: ${index * 0.05}s">
+          <div class="flex-1 min-w-0">
+            <div class="font-bold text-base truncate">${student}</div>
+            <div class="text-xs text-white/70">
+              ${result.questionsAnswered} questions • ${result.percentage}% accuracy
+            </div>
+          </div>
+          <div class="ml-3">
+            ${getGradeDisplay(result.grade)}
           </div>
         </div>
       `;
+    });
+    
+    gradesHTML += `
+        </div>
+      </div>
+    `;
+  }
 
-      document.getElementById('grades-section').innerHTML = gradesHTML;
-    }
+  // Display students who didn't meet minimum
+  if (notGradedStudents.length > 0) {
+    gradesHTML += `
+      <div class="mb-4">
+        <h3 class="text-lg font-bold text-orange-300 mb-3">⚠️ Insufficient Participation (${notGradedStudents.length})</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+    `;
+    
+    notGradedStudents.forEach(({ student, result }, index) => {
+      gradesHTML += `
+        <div class="bg-white/5 rounded-lg p-3 flex items-center justify-between animate-slide-in opacity-70" style="animation-delay: ${(gradedStudents.length * 0.05) + (index * 0.05)}s">
+          <div class="flex-1 min-w-0">
+            <div class="font-bold text-base truncate">${student}</div>
+            <div class="text-xs text-orange-400">
+              Only ${result.questionsAnswered}/${result.minRequired} questions
+            </div>
+          </div>
+          <div class="ml-3">
+            <span class="text-white/50 text-sm">No Grade</span>
+          </div>
+        </div>
+      `;
+    });
+    
+    gradesHTML += `
+        </div>
+      </div>
+    `;
+  }
+
+  gradesHTML += `
+        <div class="mt-4 p-3 bg-white/5 rounded-lg">
+          <div class="text-center text-sm text-white/70">
+            📊 <strong>Summary:</strong> ${gradedStudents.length} students graded, ${notGradedStudents.length} need more participation
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  return gradesHTML;
+}
+
+    // ========== END GAME ==========
+function endGame() {
+  showScreen('results');
+  
+  // Sort teams by score
+  const sortedTeams = [...gameState.teams].sort((a, b) => b.score - a.score);
+  
+  // Create organized results screen
+  document.getElementById('final-results').innerHTML = `
+    <div class="w-full max-w-4xl mx-auto space-y-6">
+      <!-- Game Over Title -->
+      <div class="text-center">
+        <h1 class="game-title text-5xl md:text-6xl text-yellow-400 mb-4 animate-pulse-glow">🏆 Game Over! 🏆</h1>
+        <div class="text-6xl mb-4">🎊</div>
+        <h2 class="game-title text-3xl mb-6" style="color: ${sortedTeams[0].color}">
+          ${sortedTeams[0].name} Wins!
+        </h2>
+      </div>
+      
+      <!-- Team Rankings -->
+      <div class="bg-white/10 rounded-2xl p-6">
+        <h2 class="game-title text-2xl text-yellow-400 text-center mb-4">📊 Final Team Rankings</h2>
+        <div class="space-y-4">
+          ${sortedTeams.map((team, index) => `
+            <div class="flex items-center gap-4 p-4 rounded-xl animate-slide-in ${index === 0 ? 'bg-gradient-to-r from-yellow-600/50 to-amber-600/50' : 'bg-white/5'}"
+              style="animation-delay: ${index * 0.2}s">
+              <div class="text-4xl">${index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}</div>
+              <div class="flex-1">
+                <div class="font-bold text-xl" style="color: ${team.color}">${team.name}</div>
+                <div class="text-white/70">${team.members.length} players</div>
+              </div>
+              <div class="game-title text-3xl text-yellow-400">${team.score}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Display grades in the grades section
+  document.getElementById('grades-section').innerHTML = displayAllGrades();
+}
 
     function resetGame() {
       gameState = {
@@ -1929,7 +2148,15 @@
         round4UsedPlayers: new Set(),
         round5Questions: null,
         round5CurrentQuestion: 0,
-        round5TurnIndex: 0
+        round5TurnIndex: 0,
+        // Reset Round 3 shared pool
+        round3Pool: {
+          easy: 0,
+          medium: 0,
+          hard: 0
+        },
+        round3TotalQuestions: 0,
+        round3CurrentQuestion: 0
       };
       
       showScreen('title');
@@ -1957,4 +2184,3 @@
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d219f2305c3d0e0',t:'MTc3MTc5NjIxNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
-
