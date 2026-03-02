@@ -328,8 +328,7 @@
    </div>
 
    <!-- Results Screen -->
-   <!-- Results Screen -->
-<div id="screen-results" class="flex-1 flex-col p-6 hidden overflow-y-auto">
+<div id="screen-results" class="flex-1 flex-col items-center p-6 hidden overflow-y-auto">
     <h1 class="game-title text-6xl text-yellow-400 mb-8 animate-pulse-glow">🏆 Game Over! 🏆</h1>
     <div id="final-results" class="w-full max-w-2xl space-y-4 mb-8">
      <!-- Results will be populated here -->
@@ -1931,11 +1930,14 @@ function displayAllGrades() {
   const minRequired = Math.max(3, Math.ceil(totalQuestions * 0.15));
   
   let gradesHTML = `
-    <div class="w-full max-w-4xl mx-auto">
-      <div class="bg-gradient-to-r from-blue-600/50 to-purple-600/50 rounded-2xl p-6">
-        <h2 class="game-title text-2xl text-yellow-400 text-center mb-4">🎓 Individual Student Grades</h2>
-        <p class="text-center text-white/70 mb-2 text-sm">
-          <strong>Grading Requirements:</strong> Answer at least ${minRequired} questions (15% of ${totalQuestions} total, minimum 3)
+    <div class="w-full max-w-6xl mx-auto">
+      <div class="bg-gradient-to-r from-blue-600/50 to-purple-600/50 rounded-2xl p-8">
+        <h2 class="game-title text-6xl text-yellow-400 text-center mb-8">🎓 Individual Student Grades</h2>
+        <p class="text-center text-white/70 mb-4 text-2xl">
+          <strong>Grading Requirements:</strong> Answer at least ${minRequired} questions
+        </p>
+        <p class="text-center text-white/50 mb-8 text-xl">
+          (15% of ${totalQuestions} total, minimum 3)
         </p>
   `;
 
@@ -1955,24 +1957,24 @@ function displayAllGrades() {
   // Sort graded students by grade (highest first)
   gradedStudents.sort((a, b) => b.result.grade - a.result.grade);
 
-  // Display graded students in a grid
+  // Display graded students in a single column for better readability
   if (gradedStudents.length > 0) {
     gradesHTML += `
-      <div class="mb-6">
-        <h3 class="text-lg font-bold text-green-300 mb-3">✅ Students Receiving Grades (${gradedStudents.length})</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div class="mb-8">
+        <h3 class="text-3xl font-bold text-green-300 mb-6 text-center">✅ Students Receiving Grades (${gradedStudents.length})</h3>
+        <div class="space-y-4">
     `;
     
     gradedStudents.forEach(({ student, result }, index) => {
       gradesHTML += `
-        <div class="bg-white/10 rounded-lg p-3 flex items-center justify-between animate-slide-in" style="animation-delay: ${index * 0.05}s">
-          <div class="flex-1 min-w-0">
-            <div class="font-bold text-base truncate">${student}</div>
-            <div class="text-xs text-white/70">
-              ${result.questionsAnswered} questions • ${result.percentage}% accuracy
+        <div class="bg-white/10 rounded-xl p-6 flex items-center justify-between animate-slide-in" style="animation-delay: ${index * 0.05}s">
+          <div class="flex-1">
+            <div class="font-bold text-2xl">${student}</div>
+            <div class="text-lg text-white/70 mt-2">
+              ${result.questionsAnswered} questions answered • ${result.percentage}% accuracy
             </div>
           </div>
-          <div class="ml-3">
+          <div class="ml-6">
             ${getGradeDisplay(result.grade)}
           </div>
         </div>
@@ -1988,22 +1990,22 @@ function displayAllGrades() {
   // Display students who didn't meet minimum
   if (notGradedStudents.length > 0) {
     gradesHTML += `
-      <div class="mb-4">
-        <h3 class="text-lg font-bold text-orange-300 mb-3">⚠️ Insufficient Participation (${notGradedStudents.length})</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div class="mb-6">
+        <h3 class="text-3xl font-bold text-orange-300 mb-6 text-center">⚠️ Insufficient Participation (${notGradedStudents.length})</h3>
+        <div class="space-y-4">
     `;
     
     notGradedStudents.forEach(({ student, result }, index) => {
       gradesHTML += `
-        <div class="bg-white/5 rounded-lg p-3 flex items-center justify-between animate-slide-in opacity-70" style="animation-delay: ${(gradedStudents.length * 0.05) + (index * 0.05)}s">
-          <div class="flex-1 min-w-0">
-            <div class="font-bold text-base truncate">${student}</div>
-            <div class="text-xs text-orange-400">
-              Only ${result.questionsAnswered}/${result.minRequired} questions
+        <div class="bg-white/5 rounded-xl p-6 flex items-center justify-between animate-slide-in opacity-70" style="animation-delay: ${(gradedStudents.length * 0.05) + (index * 0.05)}s">
+          <div class="flex-1">
+            <div class="font-bold text-2xl">${student}</div>
+            <div class="text-lg text-orange-400 mt-2">
+              Only ${result.questionsAnswered}/${result.minRequired} questions answered
             </div>
           </div>
-          <div class="ml-3">
-            <span class="text-white/50 text-sm">No Grade</span>
+          <div class="ml-6">
+            <span class="text-white/50 text-xl">No Grade</span>
           </div>
         </div>
       `;
@@ -2016,8 +2018,8 @@ function displayAllGrades() {
   }
 
   gradesHTML += `
-        <div class="mt-4 p-3 bg-white/5 rounded-lg">
-          <div class="text-center text-sm text-white/70">
+        <div class="mt-8 p-6 bg-white/5 rounded-lg">
+          <div class="text-center text-xl text-white/70">
             📊 <strong>Summary:</strong> ${gradedStudents.length} students graded, ${notGradedStudents.length} need more participation
           </div>
         </div>
