@@ -1218,18 +1218,19 @@
             </div>
           </div>
           
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 px-4">
   ${difficulties.map((diff, index) => `
     <button onclick="selectDifficulty('${diff.name}')" 
-      class="difficulty-card bg-gradient-to-br ${diff.color} rounded-2xl p-6 text-center shadow-xl transition-all min-h-[300px] flex flex-col justify-center"
+      class="difficulty-card bg-gradient-to-br ${diff.color} rounded-2xl p-8 text-center shadow-xl transition-all min-h-[350px] flex flex-col justify-between"
       style="animation-delay: ${index * 0.1}s">
-      <div class="text-4xl mb-6">${diff.emoji}</div>
-      <div class="text-xl font-bold capitalize mb-4">${diff.name}</div>
-      <div class="game-title text-2xl text-white">${diff.points} pts</div>
+      <div class="flex-1 flex flex-col justify-center">
+        <div class="text-6xl mb-8">${diff.emoji}</div>
+        <div class="text-3xl font-bold capitalize mb-6 leading-tight">${diff.name}</div>
+        <div class="game-title text-4xl text-white leading-tight">${diff.points} pts</div>
+      </div>
     </button>
   `).join('')}
 </div>
-        </div>
       `;
     }
 
