@@ -565,25 +565,25 @@
     }
 
     function calculateQuestionRequirements() {
-  // Get current settings values (either from form or saved settings)
-  const r1 = parseInt(document.getElementById('round1-questions')?.value) || gameSettings.round1Questions;
-  const r2 = parseInt(document.getElementById('round2-questions')?.value) || gameSettings.round2Questions;
-  const r3 = parseInt(document.getElementById('round3-questions')?.value) || gameSettings.round3Questions;
-  const r4 = parseInt(document.getElementById('round4-questions')?.value) || gameSettings.round4Questions;
-  const r5 = parseInt(document.getElementById('round5-questions')?.value) || gameSettings.round5Questions;
-  
-  // Calculate requirements - UPDATED FOR ROUND 3 LOGIC
-  const easyQuestions = (r1 * 3) + (r2 * 3) + r3 + (r5 * 1); // R1: all teams, R2: all teams, R3: r3 easy total, R5: lowest scoring team
-  const mediumQuestions = r4 + r3 + (r5 * 1); // R4: all questions, R3: r3 medium total, R5: middle scoring team  
-  const hardQuestions = r3 + (r5 * 1); // R3: r3 hard total, R5: highest scoring team
-  
-  return {
-    easy: easyQuestions,
-    medium: mediumQuestions,
-    hard: hardQuestions,
-    total: easyQuestions + mediumQuestions + hardQuestions
-  };
-}
+      // Get current settings values (either from form or saved settings)
+      const r1 = parseInt(document.getElementById('round1-questions')?.value) || gameSettings.round1Questions;
+      const r2 = parseInt(document.getElementById('round2-questions')?.value) || gameSettings.round2Questions;
+      const r3 = parseInt(document.getElementById('round3-questions')?.value) || gameSettings.round3Questions;
+      const r4 = parseInt(document.getElementById('round4-questions')?.value) || gameSettings.round4Questions;
+      const r5 = parseInt(document.getElementById('round5-questions')?.value) || gameSettings.round5Questions;
+      
+      // Calculate requirements
+      const easyQuestions = (r1 * 3) + (r2 * 3) + (r5 * 1); // R1: all teams, R2: all teams, R5: lowest scoring team
+      const mediumQuestions = r4 + (r5 * 1); // R4: all questions, R5: middle scoring team  
+      const hardQuestions = r5 * 1; // R5: highest scoring team
+      
+      return {
+        easy: easyQuestions,
+        medium: mediumQuestions,
+        hard: hardQuestions,
+        total: easyQuestions + mediumQuestions + hardQuestions
+      };
+    }
 
     // Add event listeners to update requirements in real-time
     function setupSettingsListeners() {
@@ -1099,27 +1099,26 @@
       switch(gameState.currentRound) {
         case 1: questionsPerTeam = gameSettings.round1Questions; break;
         case 2: questionsPerTeam = gameSettings.round2Questions; break;
-// Around line 870, replace the round 3 logic:
-case 3: 
-  // Round 3 has different logic - it ends when pools are exhausted OR teams reach limit
-  questionsPerTeam = gameSettings.round3Questions; 
-  break;
-
-// And update the round completion check around line 880:
-if (allTeamsCompletedRound && gameState.currentRound <= 2) {
-  // Rounds 1-2: All teams answered required questions each, move to next round
-  gameState.currentRound++;
-  gameState.roundQuestionCounts = { 0: 0, 1: 0, 2: 0 };
-  gameState.currentTeamIndex = 0; // Reset to first team
-  startRound();
-} else if (gameState.currentRound === 3) {
-  // Round 3: Continue until pools are exhausted (handled in startRound3)
-  startRound();
-} else {
-  // Continue to next team in same round
-  startRound();
-}
-
+        case 3: questionsPerTeam = gameSettings.round3Questions; break;
+        default: questionsPerTeam = 3; break;
+      }
+      
+      // Check if all teams have answered the required questions each in this round
+      const allTeamsCompletedRound = gameState.roundQuestionCounts[0] >= questionsPerTeam && 
+                                     gameState.roundQuestionCounts[1] >= questionsPerTeam && 
+                                     gameState.roundQuestionCounts[2] >= questionsPerTeam;
+      
+      if (allTeamsCompletedRound && gameState.currentRound <= 3) {
+        // All teams answered required questions each, move to next round
+        gameState.currentRound++;
+        gameState.roundQuestionCounts = { 0: 0, 1: 0, 2: 0 };
+        gameState.currentTeamIndex = 0; // Reset to first team
+        startRound();
+      } else {
+        // Continue to next team in same round
+        startRound();
+      }
+    }
 
     function skipToRound(roundNumber) {
       // Reset game state for specific round
@@ -1157,58 +1156,42 @@ if (allTeamsCompletedRound && gameState.currentRound <= 2) {
     }
 
     // ========== ROUND 2 - Category Choice ==========
-   function startRound2() {
-  gameState.passUsed = false;
-  gameState.passedToPlayer = null;
-  
-  const team = gameState.teams[gameState.currentTeamIndex];
-  gameState.currentPlayer = getRandomPlayer(gameState.currentTeamIndex);
-  
-  // Filter categories that have available easy questions
-  const availableCategories = gameState.categories.filter(category => {
-    const questionsInCategory = gameState.questions.filter(q => 
-      !gameState.usedQuestions.has(q.id) && 
-      q.category === category && 
-      q.difficulty === 'easy'
-    );
-    return questionsInCategory.length > 0;
-  });
-  
-  if (availableCategories.length === 0) {
-    showInlineMessage("No categories with easy questions available!");
-    nextTurn();
-    return;
-  }
-  
-  // Show category selection
-  document.getElementById('question-area').innerHTML = `
-    <div class="w-full max-w-3xl animate-slide-in">
-      <div class="text-center mb-8">
-        <div class="flex items-center justify-center gap-3 mb-4">
-          <div class="w-12 h-12 rounded-full flex items-center justify-center text-2xl" style="background: ${team.color}">
-            👤
-          </div>
-          <span class="font-bold text-xl">${gameState.currentPlayer}</span>
-        </div>
-        <h2 class="game-title text-3xl text-yellow-400">Choose a Category</h2>
-        <p class="text-white/70 mt-2">Round 2: ${ROUND_POINTS[2]} points per question (Easy difficulty)</p>
-        <p class="text-sm text-white/50 mt-1">Question ${gameState.roundQuestionCounts[gameState.currentTeamIndex] + 1} of ${gameSettings.round2Questions} for ${team.name}</p>
-      </div>
+    function startRound2() {
+      gameState.passUsed = false;
+      gameState.passedToPlayer = null;
       
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-        ${availableCategories.map((category, index) => `
-          <button onclick="selectCategory('${category}')" 
-            class="category-card bg-gradient-to-br from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 
-              rounded-xl p-6 text-center font-bold shadow-lg transition-all"
-            style="animation-delay: ${index * 0.1}s">
-            <div class="text-3xl mb-2">${getCategoryEmoji(category)}</div>
-            <div>${category}</div>
-          </button>
-        `).join('')}
-      </div>
-    </div>
-  `;
-}
+      const team = gameState.teams[gameState.currentTeamIndex];
+      gameState.currentPlayer = getRandomPlayer(gameState.currentTeamIndex);
+      
+      // Show category selection
+      document.getElementById('question-area').innerHTML = `
+        <div class="w-full max-w-3xl animate-slide-in">
+          <div class="text-center mb-8">
+            <div class="flex items-center justify-center gap-3 mb-4">
+              <div class="w-12 h-12 rounded-full flex items-center justify-center text-2xl" style="background: ${team.color}">
+                👤
+              </div>
+              <span class="font-bold text-xl">${gameState.currentPlayer}</span>
+            </div>
+            <h2 class="game-title text-3xl text-yellow-400">Choose a Category</h2>
+            <p class="text-white/70 mt-2">Round 2: ${ROUND_POINTS[2]} points per question (Easy difficulty)</p>
+            <p class="text-sm text-white/50 mt-1">Question ${gameState.roundQuestionCounts[gameState.currentTeamIndex] + 1} of ${gameSettings.round2Questions} for ${team.name}</p>
+          </div>
+          
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            ${gameState.categories.map((category, index) => `
+              <button onclick="selectCategory('${category}')" 
+                class="category-card bg-gradient-to-br from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 
+                  rounded-xl p-6 text-center font-bold shadow-lg transition-all"
+                style="animation-delay: ${index * 0.1}s">
+                <div class="text-3xl mb-2">${getCategoryEmoji(category)}</div>
+                <div>${category}</div>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
 
     function getCategoryEmoji(category) {
       const emojis = {
@@ -1219,146 +1202,75 @@ if (allTeamsCompletedRound && gameState.currentRound <= 2) {
       return emojis[category] || '📋';
     }
 
-function selectCategory(category) {
-  try {
-    // Check if there are any easy questions available in this category
-    const availableQuestions = gameState.questions.filter(q => 
-      !gameState.usedQuestions.has(q.id) && 
-      q.category === category && 
-      q.difficulty === 'easy'
-    );
-    
-    if (availableQuestions.length === 0) {
-      showInlineMessage(`No easy questions available in ${category}. Try another category!`);
-      return;
+    function selectCategory(category) {
+      try {
+        gameState.currentQuestion = getRandomQuestion({ category });
+        if (!gameState.currentQuestion) {
+          showInlineMessage(`No easy questions available in ${category}. Try another!`);
+          return;
+        }
+        const team = gameState.teams[gameState.currentTeamIndex];
+        renderQuestionScreen(team, gameState.currentPlayer, ROUND_POINTS[2], true);
+      } catch (error) {
+        showInlineMessage("Error loading question. Try again!");
+        console.error(error);
+      }
     }
-    
-    gameState.currentQuestion = getRandomQuestion({ category });
-    if (!gameState.currentQuestion) {
-      showInlineMessage(`No easy questions available in ${category}. Try another!`);
-      return;
-    }
-    const team = gameState.teams[gameState.currentTeamIndex];
-    renderQuestionScreen(team, gameState.currentPlayer, ROUND_POINTS[2], true);
-  } catch (error) {
-    showInlineMessage("Error loading question. Try again!");
-    console.error(error);
-  }
-}
 
-
-// ========== ROUND 3 - Difficulty Choice (Limited Pool) ==========
-function startRound3() {
-  gameState.passUsed = false;
-  gameState.passedToPlayer = null;
-  
-  // Initialize Round 3 difficulty pools if not exists
-  if (!gameState.round3DifficultyPools) {
-    gameState.round3DifficultyPools = {
-      easy: gameSettings.round3Questions,
-      medium: gameSettings.round3Questions, 
-      hard: gameSettings.round3Questions
-    };
-  }
-  
-  const team = gameState.teams[gameState.currentTeamIndex];
-  gameState.currentPlayer = getRandomPlayer(gameState.currentTeamIndex);
-  
-  // Filter available difficulties that still have questions in the pool
-  const availableDifficulties = [
-    { 
-      name: 'easy', 
-      points: ROUND_POINTS[3].easy, 
-      emoji: '😊', 
-      color: 'from-green-500 to-emerald-600',
-      remaining: gameState.round3DifficultyPools.easy
-    },
-    { 
-      name: 'medium', 
-      points: ROUND_POINTS[3].medium, 
-      emoji: '🤔', 
-      color: 'from-yellow-500 to-orange-600',
-      remaining: gameState.round3DifficultyPools.medium
-    },
-    { 
-      name: 'hard', 
-      points: ROUND_POINTS[3].hard, 
-      emoji: '🔥', 
-      color: 'from-red-500 to-pink-600',
-      remaining: gameState.round3DifficultyPools.hard
-    }
-  ].filter(diff => diff.remaining > 0);
-  
-  // Check if Round 3 is complete (no more difficulties available)
-  if (availableDifficulties.length === 0) {
-    console.log("Round 3 complete - all difficulty pools exhausted");
-    gameState.currentRound++;
-    gameState.roundQuestionCounts = { 0: 0, 1: 0, 2: 0 };
-    gameState.currentTeamIndex = 0;
-    gameState.round3DifficultyPools = null; // Reset for next game
-    startRound();
-    return;
-  }
-  
-  document.getElementById('question-area').innerHTML = `
-    <div class="w-full max-w-3xl animate-slide-in">
-      <div class="text-center mb-8">
-        <div class="flex items-center justify-center gap-3 mb-4">
-          <div class="w-12 h-12 rounded-full flex items-center justify-center text-2xl" style="background: ${team.color}">
-            👤
-          </div>
-          <span class="font-bold text-xl">${gameState.currentPlayer}</span>
-        </div>
-        <h2 class="game-title text-3xl text-yellow-400">Choose Difficulty</h2>
-        <p class="text-white/70 mt-2">Higher difficulty = More points!</p>
-        <p class="text-sm text-white/50 mt-1">Question ${gameState.roundQuestionCounts[gameState.currentTeamIndex] + 1} of ${gameSettings.round3Questions} for ${team.name}</p>
-      </div>
+    // ========== ROUND 3 - Difficulty Choice ==========
+    function startRound3() {
+      gameState.passUsed = false;
+      gameState.passedToPlayer = null;
       
-      <div class="grid grid-cols-1 md:grid-cols-${availableDifficulties.length} gap-6">
-        ${availableDifficulties.map((diff, index) => `
-          <button onclick="selectDifficulty('${diff.name}')" 
-            class="difficulty-card bg-gradient-to-br ${diff.color} rounded-2xl p-8 text-center shadow-xl transition-all"
-            style="animation-delay: ${index * 0.1}s">
-            <div class="text-5xl mb-4">${diff.emoji}</div>
-            <div class="text-2xl font-bold capitalize mb-2">${diff.name}</div>
-            <div class="game-title text-3xl text-white">${diff.points} pts</div>
-            <div class="text-xl text-white/80">${diff.remaining} left</div>
-          </button>
-        `).join('')}
-      </div>
-    </div>
-  `;
-}
-
-function selectDifficulty(difficulty) {
-  // Check if difficulty is still available
-  if (!gameState.round3DifficultyPools || gameState.round3DifficultyPools[difficulty] <= 0) {
-    showInlineMessage(`No ${difficulty} questions remaining!`);
-    startRound3(); // Refresh the screen
-    return;
-  }
-  
-  try {
-    gameState.currentQuestion = getRandomQuestion({ difficulty });
-    if (!gameState.currentQuestion) {
-      showInlineMessage(`No ${difficulty} questions available!`);
-      startRound3();
-      return;
+      const team = gameState.teams[gameState.currentTeamIndex];
+      gameState.currentPlayer = getRandomPlayer(gameState.currentTeamIndex);
+      
+      const difficulties = [
+        { name: 'easy', points: ROUND_POINTS[3].easy, emoji: '😊', color: 'from-green-500 to-emerald-600' },
+        { name: 'medium', points: ROUND_POINTS[3].medium, emoji: '🤔', color: 'from-yellow-500 to-orange-600' },
+        { name: 'hard', points: ROUND_POINTS[3].hard, emoji: '🔥', color: 'from-red-500 to-pink-600' }
+      ];
+      
+      document.getElementById('question-area').innerHTML = `
+        <div class="w-full max-w-3xl animate-slide-in">
+          <div class="text-center mb-8">
+            <div class="flex items-center justify-center gap-3 mb-4">
+              <div class="w-12 h-12 rounded-full flex items-center justify-center text-2xl" style="background: ${team.color}">
+                👤
+              </div>
+              <span class="font-bold text-xl">${gameState.currentPlayer}</span>
+            </div>
+            <h2 class="game-title text-3xl text-yellow-400">Choose Difficulty</h2>
+            <p class="text-white/70 mt-2">Higher difficulty = More points!</p>
+            <p class="text-sm text-white/50 mt-1">Question ${gameState.roundQuestionCounts[gameState.currentTeamIndex] + 1} of ${gameSettings.round3Questions} for ${team.name}</p>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            ${difficulties.map((diff, index) => `
+              <button onclick="selectDifficulty('${diff.name}')" 
+                class="difficulty-card bg-gradient-to-br ${diff.color} rounded-2xl p-8 text-center shadow-xl transition-all"
+                style="animation-delay: ${index * 0.1}s">
+                <div class="text-5xl mb-4">${diff.emoji}</div>
+                <div class="text-2xl font-bold capitalize mb-2">${diff.name}</div>
+                <div class="game-title text-3xl text-white">${diff.points} pts</div>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
     }
-    
-    // Decrease the pool count
-    gameState.round3DifficultyPools[difficulty]--;
-    
-    const team = gameState.teams[gameState.currentTeamIndex];
-    gameState.currentDifficulty = difficulty;
-    const points = ROUND_POINTS[3][difficulty] || 100;
-    renderQuestionScreen(team, gameState.currentPlayer, points, true);
-  } catch (error) {
-    showInlineMessage(`No ${difficulty} questions available!`);
-    startRound3();
-  }
-}
 
+    function selectDifficulty(difficulty) {
+      gameState.currentQuestion = getRandomQuestion({ difficulty });
+      if (!gameState.currentQuestion) {
+        showInlineMessage(`No ${difficulty} questions available. Try another difficulty!`);
+        return;
+      }
+      const team = gameState.teams[gameState.currentTeamIndex];
+      gameState.currentDifficulty = difficulty;
+      const points = ROUND_POINTS[3][difficulty] || 100;
+      renderQuestionScreen(team, gameState.currentPlayer, points, true);
+    }
 
     // ========== SHARED QUESTION SCREEN RENDERER ==========
     function renderQuestionScreen(team, player, points, showPass = false) {
@@ -2109,3 +2021,4 @@ function selectDifficulty(difficulty) {
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d219f2305c3d0e0',t:'MTc3MTc5NjIxNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
+
