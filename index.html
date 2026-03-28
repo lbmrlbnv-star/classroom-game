@@ -725,7 +725,7 @@
       }
     }
     // ========== UPDATED QUESTION SELECTION ==========
-    function getRandomQuestion(filter = null) {
+function getRandomQuestion(filter = null) {
   let available = gameState.questions.filter(q => !gameState.usedQuestions.has(q.id));
   
   // Apply difficulty filter based on round and current context
@@ -739,20 +739,28 @@
     // Round 4: Always medium questions
     available = available.filter(q => q.difficulty === 'medium');
   } else if (gameState.currentRound === 5) {
-    // Round 5: Difficulty based on team score ranking
+    // Round 5: Try preferred difficulty first, then fallback
     const teamsSorted = [...gameState.teams].map((team, idx) => ({team, idx})).sort((a, b) => b.team.score - a.team.score);
     const highestIdx = teamsSorted[0].idx;
     const secondIdx = teamsSorted[1].idx;
-    const lowestIdx = teamsSorted[2].idx;
     
-    let desiredDifficulty = 'easy'; // Default for lowest scoring team
+    let preferredDifficulty = 'easy'; // Default for lowest scoring team
     if (gameState.currentTeamIndex === highestIdx) {
-      desiredDifficulty = 'hard';
+      preferredDifficulty = 'hard';
     } else if (gameState.currentTeamIndex === secondIdx) {
-      desiredDifficulty = 'medium';
+      preferredDifficulty = 'medium';
     }
     
-    available = available.filter(q => q.difficulty === desiredDifficulty);
+    // Try preferred difficulty first
+    let filteredByDifficulty = available.filter(q => q.difficulty === preferredDifficulty);
+    
+    // If no questions available in preferred difficulty, use any available
+    if (filteredByDifficulty.length === 0) {
+      console.log(`No ${preferredDifficulty} questions available for Round 5, using any difficulty`);
+      // Don't filter by difficulty - use any available questions
+    } else {
+      available = filteredByDifficulty;
+    }
   }
   
   // Apply additional filters (for Round 2 category selection and Round 3 difficulty selection)
@@ -765,9 +773,9 @@
     }
   }
   
-  // If no questions available, return null (should not happen with proper validation)
+  // If no questions available, return null
   if (available.length === 0) {
-    console.error("No questions available! This should not happen if validation is working correctly.");
+    console.error("No questions available! Used questions:", gameState.usedQuestions.size, "Total questions:", gameState.questions.length);
     return null;
   }
   
